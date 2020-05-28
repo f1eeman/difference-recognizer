@@ -1,0 +1,32 @@
+{
+  "name": "frontend-project-lvl2",
+  "version": "1.0.0",
+  "description": "Personall project \"Difference definer\"",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/f1eeman/frontend-project-lvl2.git"
+  },
+  "keywords": [
+    "Difference",
+    "definer"
+  ],
+  "author": "daniyar zhanakhmetov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/f1eeman/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/f1eeman/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^5.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.1.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2"
+  }
+}
