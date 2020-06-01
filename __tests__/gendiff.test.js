@@ -1,7 +1,7 @@
 import genDiff from '../src/gendiff.js';
 
 test('gendiff', () => {
-  expect(genDiff('../__fixtures__/before.json', '../__fixtures__/after.json')).toBe(`{
+  expect(genDiff('../frontend-project-lvl2/__fixtures__/before.json', '../frontend-project-lvl2/__fixtures__/after.json')).toMatch(`{
     name: Mary
   + gender: female
   - gender: male
@@ -11,5 +11,5 @@ test('gendiff', () => {
   - height: 178
   + korean: false
   + friends: false
-  }`);
+}`);
 });

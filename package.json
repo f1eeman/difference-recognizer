@@ -4,14 +4,15 @@
   "description": "Personall project \"Difference definer\"",
   "main": "src/index.js",
   "type": "module",
-  "jest": {
-    "verbose": true
-  },
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
   "scripts": {
-    "test": "jest"
+    "test": "npx -n --experimental-vm-modules jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {}
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
   },
   "homepage": "https://github.com/f1eeman/frontend-project-lvl2#readme",
   "dependencies": {
+    "@jest/globals": "^26.0.1",
     "commander": "^5.1.0",
     "lodash": "^4.17.15"
   },
@@ -35,6 +37,8 @@
     "eslint": "^7.1.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
-    "jest": "^26.0.1"
+    "eslint-plugin-jest": "^23.13.2",
+    "jest": "^26.0.1",
+    "jest-cli": "^26.0.1"
   }
 }
