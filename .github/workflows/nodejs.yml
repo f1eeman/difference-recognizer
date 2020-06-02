@@ -51,3 +51,4 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.EVA_4REVER }}
         with:
           coverageCommand: make test-coverage
+          debug: true
