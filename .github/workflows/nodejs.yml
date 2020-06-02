@@ -42,3 +42,12 @@ jobs:
         # Run Linter
         run: |
           make lint
+      - name: Test & publish code coverage
+        # Publish code coverage on Code Climate
+        # https://github.com/paambaati/codeclimate-action
+        uses: paambaati/codeclimate-action@v2.6.0
+        # Add Code Climate secret key
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.EVA_4REVER }}
+        with:
+          coverageCommand: make test-coverage
