@@ -1,11 +1,12 @@
 import yaml from 'js-yaml';
+import ini from 'ini';
 
 export default (data, extname) => {
-  let result = '';
   if (extname === '.json') {
-    result = JSON.parse(data);
-  } else if (extname === '.yaml') {
-    result = yaml.safeLoad(data);
+    return JSON.parse(data);
   }
-  return result;
+  if (extname === '.yaml') {
+    return yaml.safeLoad(data);
+  }
+  return ini.parse(data);
 };
