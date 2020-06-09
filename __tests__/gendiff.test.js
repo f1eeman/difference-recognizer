@@ -2,7 +2,7 @@ import path, { dirname } from 'path';
 import {
   genDiff, getDiff, getData, getParsedData, getExtName,
 } from '../src/gendiff.js';
-
+import getDiffPlainType from '../src/formatters/plain.js';
 
 test('gendiff(flat JSON)', () => {
   const dirname1 = dirname('__fixtures__/before.json');
@@ -136,4 +136,22 @@ test('gendiff(ini)', () => {
   + korean: false
   + friends: false
 }`);
+});
+
+test('getDiffPlainType(nested JSON)', () => {
+  const dirname1 = dirname('__fixtures__/before.json');
+  const dirname2 = dirname('__fixtures__/after.json');
+  const fileName1 = 'before2.json';
+  const fileName2 = 'after2.json';
+  const extName1 = getExtName(fileName1);
+  const extName2 = getExtName(fileName2);
+  const path1 = path.join(dirname1, fileName1);
+  const path2 = path.join(dirname2, fileName2);
+  const data1 = getData(path1);
+  const data2 = getData(path2);
+  const parsedData1 = getParsedData(data1, extName1);
+  const parsedData2 = getParsedData(data2, extName2);
+  const processedData = genDiff(parsedData1, parsedData2);
+  const result = "Property 'common.setting2' was deleted\nProperty 'common.setting3' was changed from 'true' to [complex value]\nProperty 'common.setting6.ops' was added with value: vops\nProperty 'common.follow' was added with value: false\nProperty 'common.setting4' was added with value: blah blah\nProperty 'common.setting5' was added with value: [complex value]\nProperty 'group1.baz' was changed from 'bas' to 'bars'\nProperty 'group1.nest' was changed from [complex value] to 'str'\nProperty 'group2' was deleted\nProperty 'group3' was added with value: [complex value]";
+  expect(getDiffPlainType(processedData, parsedData1, parsedData2)).toBe(result);
 });
