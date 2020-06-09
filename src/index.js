@@ -23,8 +23,10 @@ export default () => {
     const processedData = genDiff(parsedData1, parsedData2);
     if (program.format === 'stylish') {
       console.log(getDiff(processedData, parsedData1, parsedData2));
-    } else {
+    } else if (program.format === 'plain') {
       console.log(getDiffPlainType(processedData, parsedData1, parsedData2));
+    } else if (program.format === 'json') {
+      console.log(JSON.stringify(processedData, null, 2));
     }
   });
   program.parse(process.argv);
