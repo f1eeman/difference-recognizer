@@ -1,42 +1,6 @@
-import fs from 'fs';
-import path from 'path';
 import _ from 'lodash';
-import parse from './parsers.js';
 
-export const getExtName = (fileName) => path.extname(fileName).slice(1);
-
-export const getFilePath = (fileName) => path.resolve(process.cwd(), fileName);
-
-export const getData = (filePath) => fs.readFileSync(filePath, 'utf8');
-
-export const getParsedData = (data, extName) => parse(data, extName);
-
-export const genDiff = (dataBefore, dataAfter) => {
-  const keysDataBefore = Object.keys(dataBefore);
-  const keysDataAfter = Object.keys(dataAfter);
-  const allKeys = _.union([...keysDataBefore, ...keysDataAfter]);
-
-  const diffs = allKeys.reduce((acc, key) => {
-    const newValue = dataAfter[key];
-    const oldValue = dataBefore[key];
-    if (_.isPlainObject(newValue) && _.isPlainObject(oldValue)) {
-      return { ...acc, [key]: [genDiff(oldValue, newValue)] };
-    }
-    if (_.hasIn(dataBefore, key) && _.hasIn(dataAfter, key)) {
-      if (oldValue === newValue) {
-        return { ...acc, [key]: { value: oldValue, type: 'unchanged' } };
-      }
-      return { ...acc, [key]: { value: oldValue, type: 'modified' } };
-    }
-    if (_.hasIn(dataBefore, key)) {
-      return { ...acc, [key]: { value: oldValue, type: 'deleted' } };
-    }
-    return { ...acc, [key]: { value: newValue, type: 'added' } };
-  }, {});
-  return diffs;
-};
-
-export const getDiff = (diff, dataBefore, dataAfter) => {
+export default (diff, dataBefore, dataAfter) => {
   const getStr = (obj, data1, data2, spacesCount = 4, stepForSpace = 2) => {
     const keys = Object.keys(obj);
     const entries = Object.entries(obj);
