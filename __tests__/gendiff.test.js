@@ -1,5 +1,5 @@
 import path from 'path';
-import genDiff from '../src/formatters/index.js';
+import genDiff from '../src/index.js';
 import {
   resultForJsonFormatter, resultForPlainFormatter, resultForStylishFormatter,
 } from '../__fixtures__/results.js';

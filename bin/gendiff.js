@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import getInfo from '../src/index.js';
+import getInfo from '../src/cli.js';
 
 getInfo();
