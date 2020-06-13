@@ -1,6 +1,3 @@
-name: Mary
-gender: female 
-os: android
-height: 198
-korean: false
-friends: false
+timeout: 20
+verbose: true
+host: hexlet.io

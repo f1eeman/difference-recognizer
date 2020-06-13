@@ -1,6 +1,10 @@
 import _ from 'lodash';
+import { genDiff, getParsedData } from '../tools/utilities.js';
 
-export default (diff, dataBefore, dataAfter) => {
+export default (fileName1, fileName2) => {
+  const dataBefore = getParsedData(fileName1);
+  const dataAfter = getParsedData(fileName2);
+  const diff = genDiff(dataBefore, dataAfter);
   const getStr = (obj, data1, data2, parent = '') => {
     const keys = Object.keys(obj);
     const entries = Object.entries(obj);
