@@ -2,71 +2,33 @@ import path from 'path';
 import fs from 'fs';
 import genDiff from '../index.js';
 
-let pathToJsonFile1;
-let pathToJsonFile2;
-let pathToIniFile1;
-let pathToIniFile2;
-let pathToYamlFile1;
-let pathToYamlFile2;
-let pathToResultStylishFormatter;
-let pathToResultPlainFormatter;
-let pathToResultJsonFormatter;
-let pathToResultJsonFormatterIni;
-let resultStylishFormatter;
-let resultPlainFormatter;
-let resultJsonFormatter;
-let resultJsonFormatterIni;
+const getFilePath = (fileName) => path.join(`${process.cwd()}/__fixtures__/${fileName}`);
+const pathToJsonFile1 = getFilePath('before.json');
+const pathToJsonFile2 = getFilePath('after.json');
+const pathToIniFile1 = getFilePath('before.ini');
+const pathToIniFile2 = getFilePath('after.ini');
+const pathToYamlFile1 = getFilePath('before.yaml');
+const pathToYamlFile2 = getFilePath('after.yaml');
+const pathToResultStylishFormatter = getFilePath('result-stylish-formatter.txt');
+const pathToResultPlainFormatter = getFilePath('result-plain-formatter.txt');
+const pathToResultJsonFormatter = getFilePath('result-json-formatter.json');
+const pathToResultJsonFormatterIni = getFilePath('result-json-formatter-ini.json');
+const resultStylishFormatter = fs.readFileSync(pathToResultStylishFormatter, 'utf8');
+const resultPlainFormatter = fs.readFileSync(pathToResultPlainFormatter, 'utf8');
+const resultJsonFormatter = fs.readFileSync(pathToResultJsonFormatter, 'utf8');
+const resultJsonFormatterIni = fs.readFileSync(pathToResultJsonFormatterIni, 'utf8');
+const table = [
+  [pathToJsonFile1, pathToJsonFile2, resultStylishFormatter, 'stylish'],
+  [pathToIniFile1, pathToIniFile2, resultStylishFormatter, 'stylish'],
+  [pathToYamlFile1, pathToYamlFile2, resultStylishFormatter, 'stylish'],
+  [pathToJsonFile1, pathToJsonFile2, resultPlainFormatter, 'plain'],
+  [pathToIniFile1, pathToIniFile2, resultPlainFormatter, 'plain'],
+  [pathToYamlFile1, pathToYamlFile2, resultPlainFormatter, 'plain'],
+  [pathToJsonFile1, pathToJsonFile2, resultJsonFormatter, 'json'],
+  [pathToIniFile1, pathToIniFile2, resultJsonFormatterIni, 'json'],
+  [pathToYamlFile1, pathToYamlFile2, resultJsonFormatter, 'json'],
+];
 
-beforeAll(() => {
-  const getFilePath = (fileName) => path.join(`${process.cwd()}/__fixtures__/${fileName}`);
-  pathToJsonFile1 = getFilePath('before.json');
-  pathToJsonFile2 = getFilePath('after.json');
-  pathToIniFile1 = getFilePath('before.ini');
-  pathToIniFile2 = getFilePath('after.ini');
-  pathToYamlFile1 = getFilePath('before.yaml');
-  pathToYamlFile2 = getFilePath('after.yaml');
-  pathToResultStylishFormatter = getFilePath('result-stylish-formatter.txt');
-  pathToResultPlainFormatter = getFilePath('result-plain-formatter.txt');
-  pathToResultJsonFormatter = getFilePath('result-json-formatter.json');
-  pathToResultJsonFormatterIni = getFilePath('result-json-formatter-ini.json');
-  resultStylishFormatter = fs.readFileSync(pathToResultStylishFormatter, 'utf8');
-  resultPlainFormatter = fs.readFileSync(pathToResultPlainFormatter, 'utf8');
-  resultJsonFormatter = fs.readFileSync(pathToResultJsonFormatter, 'utf8');
-  resultJsonFormatterIni = fs.readFileSync(pathToResultJsonFormatterIni, 'utf8');
-});
-
-test('genDiffStylishType(JSON)', () => {
-  expect(genDiff(pathToJsonFile1, pathToJsonFile2)).toBe(resultStylishFormatter);
-});
-
-test('getDiffPlainType(JSON)', () => {
-  expect(genDiff(pathToJsonFile1, pathToJsonFile2, 'plain')).toBe(resultPlainFormatter);
-});
-
-test('genDiffJsonType(JSON)', () => {
-  expect(genDiff(pathToJsonFile1, pathToJsonFile2, 'json')).toBe(resultJsonFormatter);
-});
-
-test('genDiffStylishType(ini)', () => {
-  expect(genDiff(pathToIniFile1, pathToIniFile2)).toBe(resultStylishFormatter);
-});
-
-test('getDiffPlainType(ini)', () => {
-  expect(genDiff(pathToIniFile1, pathToIniFile2, 'plain')).toBe(resultPlainFormatter);
-});
-
-test('genDiffJsonType(ini)', () => {
-  expect(genDiff(pathToIniFile1, pathToIniFile2, 'json')).toBe(resultJsonFormatterIni);
-});
-
-test('genDiffStylishType(yaml)', () => {
-  expect(genDiff(pathToYamlFile1, pathToYamlFile2)).toBe(resultStylishFormatter);
-});
-
-test('getDiffPlainType(yaml)', () => {
-  expect(genDiff(pathToYamlFile1, pathToYamlFile2, 'plain')).toBe(resultPlainFormatter);
-});
-
-test('genDiffJsonType(yaml)', () => {
-  expect(genDiff(pathToYamlFile1, pathToYamlFile2, 'json')).toBe(resultJsonFormatter);
+test.each(table)('gendiff %#', (pathToFile1, pathToFile2, expected, formatter) => {
+  expect(genDiff(pathToFile1, pathToFile2, formatter)).toBe(expected);
 });
