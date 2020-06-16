@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import genDiff from '../src/index.js';
+import genDiff from '../index.js';
 
 let pathToJsonFile1;
 let pathToJsonFile2;

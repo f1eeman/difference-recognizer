@@ -26,7 +26,7 @@
       + nest: str
     }
   - group2: {
-      abc: 12345
+        abc: 12345
     }
   + group3: {
         fee: 100500

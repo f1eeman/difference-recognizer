@@ -20,11 +20,11 @@ export default (fileName1, fileName2) => {
       }
 
       if (innerValue.type === 'modified') {
-        const spacesBeforeDeletedValesCount = spacesCount - stepForSpace;
-        const spacesBeforeInnerDeletedValesCount = spacesCount + stepForSpace + stepForSpace;
+        const spacesBeforeModifiedValuesCount = spacesCount - stepForSpace;
+        const spacesBeforeInnerModifiedValuesCount = spacesCount + stepForSpace + stepForSpace;
         const spacesBeforeInnerCloseBracketCount = spacesCount;
-        const indentOut = ' '.repeat(spacesBeforeDeletedValesCount);
-        const indentInner = ' '.repeat(spacesBeforeInnerDeletedValesCount);
+        const indentOut = ' '.repeat(spacesBeforeModifiedValuesCount);
+        const indentInner = ' '.repeat(spacesBeforeInnerModifiedValuesCount);
         const indentBeforeCloseBracket = ' '.repeat(spacesBeforeInnerCloseBracketCount);
 
         if (_.isPlainObject(data1[keys[currentIndex]])) {
@@ -41,11 +41,11 @@ export default (fileName1, fileName2) => {
       }
 
       if (innerValue.type === 'added') {
-        const spacesBeforeDeletedValesCount = spacesCount - stepForSpace;
-        const spacesBeforeInnerDeletedValesCount = spacesCount + stepForSpace + stepForSpace;
+        const spacesBeforeAddedValuesCount = spacesCount - stepForSpace;
+        const spacesBeforeInnerAddedValuesCount = spacesCount + stepForSpace + stepForSpace;
         const spacesBeforeInnerCloseBracketCount = spacesCount;
-        const indentOut = ' '.repeat(spacesBeforeDeletedValesCount);
-        const indentInner = ' '.repeat(spacesBeforeInnerDeletedValesCount);
+        const indentOut = ' '.repeat(spacesBeforeAddedValuesCount);
+        const indentInner = ' '.repeat(spacesBeforeInnerAddedValuesCount);
         const indentBeforeCloseBracket = ' '.repeat(spacesBeforeInnerCloseBracketCount);
 
         if (_.isPlainObject(data2[keys[currentIndex]])) {
@@ -57,11 +57,11 @@ export default (fileName1, fileName2) => {
       }
 
       if (innerValue.type === 'deleted') {
-        const spacesBeforeDeletedValesCount = spacesCount - stepForSpace;
-        const spacesBeforeInnerDeletedValesCount = spacesCount + stepForSpace;
+        const spacesBeforeDeletedValuesCount = spacesCount - stepForSpace;
+        const spacesBeforeInnerDeletedValuesCount = spacesCount + stepForSpace + stepForSpace;
         const spacesBeforeInnerCloseBracketCount = spacesCount;
-        const indentOut = ' '.repeat(spacesBeforeDeletedValesCount);
-        const indentInner = ' '.repeat(spacesBeforeInnerDeletedValesCount);
+        const indentOut = ' '.repeat(spacesBeforeDeletedValuesCount);
+        const indentInner = ' '.repeat(spacesBeforeInnerDeletedValuesCount);
         const indentBeforeCloseBracket = ' '.repeat(spacesBeforeInnerCloseBracketCount);
 
         if (_.isPlainObject(data1[keys[currentIndex]])) {
@@ -72,8 +72,8 @@ export default (fileName1, fileName2) => {
         return `${acc}${firstSymbol}${indentOut}- ${keys[currentIndex]}: ${data1[keys[currentIndex]]}`;
       }
 
-      const spacesBeforeUnchangedValesCount = spacesCount;
-      const indent = ' '.repeat(spacesBeforeUnchangedValesCount);
+      const spacesBeforeUnchangedValuesCount = spacesCount;
+      const indent = ' '.repeat(spacesBeforeUnchangedValuesCount);
 
       if (_.isPlainObject(data1[keys[currentIndex]])) {
         const [newKey] = Object.keys(data1[keys[currentIndex]]);
