@@ -1,11 +1,14 @@
-import path from 'path';
+import path, { dirname } from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import genDiff from '../index.js';
 
-const getFilePath = (fileName) => path.join(`${process.cwd()}/__fixtures__/${fileName}`);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const getFilePath = (fileName) => path.join(`${__dirname}/../__fixtures__/${fileName}`);
 const fileName1 = 'before';
 const fileName2 = 'after';
-const formatters = ['stylish', 'plain', 'json'];
 let pathToResultStylishFormatter;
 let pathToResultPlainFormatter;
 let pathToResultJsonFormatter;
@@ -31,22 +34,7 @@ beforeAll(() => {
 test.each(testArguments)('gendiff %s', (fileExtName) => {
   const pathToFile1 = getFilePath(`${fileName1}.${fileExtName}`);
   const pathToFile2 = getFilePath(`${fileName2}.${fileExtName}`);
-  formatters.map((formatter) => {
-    const actual = genDiff(pathToFile1, pathToFile2, formatter);
-    let expected;
-    switch (formatter) {
-      case ('stylish'):
-        expected = resultStylishFormatter;
-        break;
-      case ('plain'):
-        expected = resultPlainFormatter;
-        break;
-      case ('json'):
-        expected = resultJsonFormatter;
-        break;
-      default:
-        throw new Error(`Unknown formatter: ${formatter}`);
-    }
-    return expect(actual).toEqual(expected);
-  });
+  expect(genDiff(pathToFile1, pathToFile2, 'stylish')).toEqual(resultStylishFormatter);
+  expect(genDiff(pathToFile1, pathToFile2, 'plain')).toEqual(resultPlainFormatter);
+  expect(genDiff(pathToFile1, pathToFile2, 'json')).toEqual(resultJsonFormatter);
 });
