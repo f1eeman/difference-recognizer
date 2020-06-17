@@ -19,6 +19,18 @@ export const getParsedData = (fileName) => {
   return parsedData;
 };
 
+export const getDataWithProperTypeOfValues = (data) => {
+  const keys = Object.keys(data);
+  const result = keys.reduce((acc, key) => {
+    const newValue = _.isNaN(+data[key]) || _.isBoolean(data[key]) ? data[key] : +data[key];
+    if (_.isPlainObject(newValue)) {
+      return { ...acc, [key]: getDataWithProperTypeOfValues(newValue) };
+    }
+    return { ...acc, [key]: newValue };
+  }, {});
+  return result;
+};
+
 export const genDiff = (dataBefore, dataAfter) => {
   const keysDataBefore = Object.keys(dataBefore);
   const keysDataAfter = Object.keys(dataAfter);
