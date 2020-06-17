@@ -12,7 +12,7 @@ let resultStylishFormatter;
 let resultPlainFormatter;
 let resultJsonFormatter;
 
-const getFilePath = (fileName) => path.join(`${__dirname}`, '/../__fixtures__/', `${fileName}`);
+const getFilePath = (fileName) => path.join(`${__dirname}`, '..', '__fixtures__', `${fileName}`);
 
 beforeAll(() => {
   resultStylishFormatter = fs.readFileSync(getFilePath('result-stylish-formatter.txt'), 'utf8');
