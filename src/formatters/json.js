@@ -1,5 +1,5 @@
 import path from 'path';
-import { genDiff, getParsedData, getDataWithProperTypeOfValues } from '../tools/utilities.js';
+import { genDiff, getParsedData, getDataWithProperTypeOfValues } from '../utilities.js';
 
 export default (fileName1, fileName2) => {
   const extName = path.extname(fileName1).slice(1);

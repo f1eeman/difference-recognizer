@@ -3,14 +3,6 @@ import path from 'path';
 import _ from 'lodash';
 import parse from './parsers.js';
 
-// export const getExtName = (fileName) => path.extname(fileName).slice(1);
-
-// export const getFilePath = (fileName) => path.resolve(process.cwd(), fileName);
-
-// export const getData = (filePath) => fs.readFileSync(filePath, 'utf8');
-
-// export const getParsedData = (data, extName) => parse(data, extName);
-
 export const getParsedData = (fileName) => {
   const extName = path.extname(fileName).slice(1);
   const filePath = path.resolve(process.cwd(), fileName);
