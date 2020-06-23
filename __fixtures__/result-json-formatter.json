@@ -10,7 +10,10 @@
         "type": "deleted"
       },
       "setting3": {
-        "value": true,
+        "oldValue": true,
+        "newValue": {
+          "key": "value"
+        },
         "type": "modified"
       },
       "setting6": [
@@ -44,7 +47,8 @@
   "group1": [
     {
       "baz": {
-        "value": "bas",
+        "oldValue": "bas",
+        "newValue": "bars",
         "type": "modified"
       },
       "foo": {
@@ -52,9 +56,10 @@
         "type": "unchanged"
       },
       "nest": {
-        "value": {
+        "oldValue": {
           "key": "value"
         },
+        "newValue": "str",
         "type": "modified"
       }
     }

@@ -1,5 +1,5 @@
 import program from 'commander';
-import genDiff from './formatters/index.js';
+import genDiff from './index.js';
 
 export default () => {
   program

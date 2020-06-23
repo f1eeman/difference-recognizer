@@ -3,14 +3,6 @@ import path from 'path';
 import _ from 'lodash';
 import parse from './parsers.js';
 
-export const getParsedData = (fileName) => {
-  const extName = path.extname(fileName).slice(1);
-  const filePath = path.resolve(process.cwd(), fileName);
-  const data = fs.readFileSync(filePath, 'utf8');
-  const parsedData = parse(data, extName);
-  return parsedData;
-};
-
 export const getDataWithProperTypeOfValues = (data) => {
   const keys = Object.keys(data);
   const result = keys.reduce((acc, key) => {
@@ -23,11 +15,18 @@ export const getDataWithProperTypeOfValues = (data) => {
   return result;
 };
 
+export const getParsedData = (fileName) => {
+  const extName = path.extname(fileName).slice(1);
+  const filePath = path.resolve(process.cwd(), fileName);
+  const data = fs.readFileSync(filePath, 'utf8');
+  const parsedData = parse(data, extName);
+  return extName === 'ini' ? getDataWithProperTypeOfValues(parsedData) : parsedData;
+};
+
 export const genDiff = (dataBefore, dataAfter) => {
   const keysDataBefore = Object.keys(dataBefore);
   const keysDataAfter = Object.keys(dataAfter);
   const allKeys = _.union([...keysDataBefore, ...keysDataAfter]);
-
   const diffs = allKeys.reduce((acc, key) => {
     const newValue = dataAfter[key];
     const oldValue = dataBefore[key];
@@ -38,7 +37,7 @@ export const genDiff = (dataBefore, dataAfter) => {
       if (oldValue === newValue) {
         return { ...acc, [key]: { value: oldValue, type: 'unchanged' } };
       }
-      return { ...acc, [key]: { value: oldValue, type: 'modified' } };
+      return { ...acc, [key]: { oldValue, newValue, type: 'modified' } };
     }
     if (_.hasIn(dataBefore, key)) {
       return { ...acc, [key]: { value: oldValue, type: 'deleted' } };
