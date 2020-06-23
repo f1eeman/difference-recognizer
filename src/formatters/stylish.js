@@ -6,21 +6,21 @@ export default (data) => {
     const entries = Object.entries(obj);
     const result = entries.reduce((acc, [key, innerValue], currentIndex) => {
       const firstSymbol = acc.length === 0 ? '' : '\n';
+      const spacesBeforeValuesCount = spacesCount - stepForSpace;
+      const spacesBeforeInnerValuesCount = spacesCount + stepForSpace + stepForSpace;
+      const indentOut = ' '.repeat(spacesBeforeValuesCount);
+      const indentInner = ' '.repeat(spacesBeforeInnerValuesCount);
+      const indentBeforeCloseBracket = ' '.repeat(spacesCount);
+      const indentForUnchangedValue = ' '.repeat(spacesCount);
+      const [oldKey, newKey] = Object.keys(obj[keys[currentIndex]]);
+      const oldValue = obj[keys[currentIndex]][oldKey];
+      const newValue = obj[keys[currentIndex]][newKey];
       if (Array.isArray(innerValue)) {
         const [objOfInnerValue] = innerValue;
         const indent = ' '.repeat(spacesCount);
         return `${acc}${firstSymbol}${indent}${key}: {\n${getStr(objOfInnerValue, spacesCount + stepForSpace + stepForSpace)}\n${indent}}`;
       }
       if (innerValue.type === 'modified') {
-        const spacesBeforeModifiedValuesCount = spacesCount - stepForSpace;
-        const spacesBeforeInnerModifiedValuesCount = spacesCount + stepForSpace + stepForSpace;
-        const spacesBeforeInnerCloseBracketCount = spacesCount;
-        const indentOut = ' '.repeat(spacesBeforeModifiedValuesCount);
-        const indentInner = ' '.repeat(spacesBeforeInnerModifiedValuesCount);
-        const indentBeforeCloseBracket = ' '.repeat(spacesBeforeInnerCloseBracketCount);
-        const [oldKey, newKey] = Object.keys(obj[keys[currentIndex]]);
-        const oldValue = obj[keys[currentIndex]][oldKey];
-        const newValue = obj[keys[currentIndex]][newKey];
         if (_.isPlainObject(oldValue)) {
           const [keyOfOldValue] = Object.keys(oldValue);
           const value = oldValue[keyOfOldValue];
@@ -34,30 +34,14 @@ export default (data) => {
         return `${acc}${firstSymbol}${indentOut}- ${keys[currentIndex]}: ${oldValue}\n${indentOut}+ ${keys[currentIndex]}: ${newValue}`;
       }
       if (innerValue.type === 'added') {
-        const spacesBeforeAddedValuesCount = spacesCount - stepForSpace;
-        const spacesBeforeInnerAddedValuesCount = spacesCount + stepForSpace + stepForSpace;
-        const spacesBeforeInnerCloseBracketCount = spacesCount;
-        const indentOut = ' '.repeat(spacesBeforeAddedValuesCount);
-        const indentInner = ' '.repeat(spacesBeforeInnerAddedValuesCount);
-        const indentBeforeCloseBracket = ' '.repeat(spacesBeforeInnerCloseBracketCount);
-        const [newKey] = Object.keys(obj[keys[currentIndex]]);
-        const newValue = obj[keys[currentIndex]][newKey];
-        if (_.isPlainObject(newValue)) {
-          const [keyOfNewValue] = Object.keys(newValue);
-          const value = newValue[keyOfNewValue];
+        if (_.isPlainObject(oldValue)) {
+          const [keyOfNewValue] = Object.keys(oldValue);
+          const value = oldValue[keyOfNewValue];
           return `${acc}${firstSymbol}${indentOut}+ ${keys[currentIndex]}: {\n${indentInner}${keyOfNewValue}: ${value}\n${indentBeforeCloseBracket}}`;
         }
-        return `${acc}${firstSymbol}${indentOut}+ ${keys[currentIndex]}: ${newValue}`;
+        return `${acc}${firstSymbol}${indentOut}+ ${keys[currentIndex]}: ${oldValue}`;
       }
       if (innerValue.type === 'deleted') {
-        const spacesBeforeDeletedValuesCount = spacesCount - stepForSpace;
-        const spacesBeforeInnerDeletedValuesCount = spacesCount + stepForSpace + stepForSpace;
-        const spacesBeforeInnerCloseBracketCount = spacesCount;
-        const indentOut = ' '.repeat(spacesBeforeDeletedValuesCount);
-        const indentInner = ' '.repeat(spacesBeforeInnerDeletedValuesCount);
-        const indentBeforeCloseBracket = ' '.repeat(spacesBeforeInnerCloseBracketCount);
-        const [oldKey] = Object.keys(obj[keys[currentIndex]]);
-        const oldValue = obj[keys[currentIndex]][oldKey];
         if (_.isPlainObject(oldValue)) {
           const [keyOfOldValue] = Object.keys(oldValue);
           const value = oldValue[keyOfOldValue];
@@ -65,11 +49,7 @@ export default (data) => {
         }
         return `${acc}${firstSymbol}${indentOut}- ${keys[currentIndex]}: ${oldValue}`;
       }
-      const spacesBeforeUnchangedValuesCount = spacesCount;
-      const indent = ' '.repeat(spacesBeforeUnchangedValuesCount);
-      const [oldKey] = Object.keys(obj[keys[currentIndex]]);
-      const oldValue = obj[keys[currentIndex]][oldKey];
-      return `${acc}${firstSymbol}${indent}${keys[currentIndex]}: ${oldValue}`;
+      return `${acc}${firstSymbol}${indentForUnchangedValue}${keys[currentIndex]}: ${oldValue}`;
     }, '');
     return `${result}`;
   };
