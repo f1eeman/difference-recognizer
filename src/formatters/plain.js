@@ -6,6 +6,7 @@ export default (data) => {
     const entries = Object.entries(obj);
 
     const result = entries.flatMap(([key, innerValue], currentIndex) => {
+      const propertyName = `${parent}${keys[currentIndex]}`;
       if (Array.isArray(innerValue)) {
         const [objOfInnerValue] = innerValue;
         const newParent = `${parent}${key}.`;
@@ -16,25 +17,25 @@ export default (data) => {
         const oldValue = obj[keys[currentIndex]][oldKey];
         const newValue = obj[keys[currentIndex]][newKey];
         if (_.isPlainObject(oldValue)) {
-          return `Property '${parent}${keys[currentIndex]}' was changed from [complex value] to '${newValue}'`;
+          return `Property '${propertyName}' was changed from [complex value] to '${newValue}'`;
         }
         if (_.isPlainObject(newValue)) {
-          return `Property '${parent}${keys[currentIndex]}' was changed from '${oldValue}' to [complex value]`;
+          return `Property '${propertyName}' was changed from '${oldValue}' to [complex value]`;
         }
-        return `Property '${parent}${keys[currentIndex]}' was changed from '${oldValue}' to '${newValue}'`;
+        return `Property '${propertyName}' was changed from '${oldValue}' to '${newValue}'`;
       }
 
       if (innerValue.type === 'added') {
         const [keyOfNewValue] = Object.keys(obj[keys[currentIndex]]);
         const newValue = obj[keys[currentIndex]][keyOfNewValue];
         if (_.isPlainObject(newValue)) {
-          return `Property '${parent}${keys[currentIndex]}' was added with value: [complex value]`;
+          return `Property '${propertyName}' was added with value: [complex value]`;
         }
-        return `Property '${parent}${keys[currentIndex]}' was added with value: ${newValue}`;
+        return `Property '${propertyName}' was added with value: ${newValue}`;
       }
 
       if (innerValue.type === 'deleted') {
-        return `Property '${parent}${keys[currentIndex]}' was deleted`;
+        return `Property '${propertyName}' was deleted`;
       }
       return '';
     });
