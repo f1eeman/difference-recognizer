@@ -1,21 +1,17 @@
 import _ from 'lodash';
 
 export default (data) => {
-  const getStr = (obj, parent = '') => {
-    const keys = Object.keys(obj);
-    const entries = Object.entries(obj);
-
-    const result = entries.flatMap(([key, innerValue], currentIndex) => {
-      const propertyName = `${parent}${keys[currentIndex]}`;
-      if (Array.isArray(innerValue)) {
-        const [objOfInnerValue] = innerValue;
+  const getStr = (tree, parent = '') => {
+    const result = tree.flatMap((node) => {
+      const {
+        key, type, value, oldValue, newValue, children,
+      } = node;
+      const propertyName = `${parent}${key}`;
+      if (type === 'parent') {
         const newParent = `${parent}${key}.`;
-        return getStr(objOfInnerValue, newParent);
+        return getStr(children, newParent);
       }
-      if (innerValue.type === 'modified') {
-        const [oldKey, newKey] = Object.keys(obj[keys[currentIndex]]);
-        const oldValue = obj[keys[currentIndex]][oldKey];
-        const newValue = obj[keys[currentIndex]][newKey];
+      if (type === 'modified') {
         if (_.isPlainObject(oldValue)) {
           return `Property '${propertyName}' was changed from [complex value] to '${newValue}'`;
         }
@@ -25,16 +21,14 @@ export default (data) => {
         return `Property '${propertyName}' was changed from '${oldValue}' to '${newValue}'`;
       }
 
-      if (innerValue.type === 'added') {
-        const [keyOfNewValue] = Object.keys(obj[keys[currentIndex]]);
-        const newValue = obj[keys[currentIndex]][keyOfNewValue];
-        if (_.isPlainObject(newValue)) {
+      if (type === 'added') {
+        if (_.isPlainObject(value)) {
           return `Property '${propertyName}' was added with value: [complex value]`;
         }
-        return `Property '${propertyName}' was added with value: ${newValue}`;
+        return `Property '${propertyName}' was added with value: ${value}`;
       }
 
-      if (innerValue.type === 'deleted') {
+      if (type === 'deleted') {
         return `Property '${propertyName}' was deleted`;
       }
       return '';

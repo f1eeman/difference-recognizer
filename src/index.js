@@ -1,4 +1,5 @@
-import { getParsedData, genDiff } from './utilities.js';
+import getParsedData from './parsers.js';
+import genDiff from './gendiff.js';
 import getFormattedData from './formatters/index.js';
 
 export default (fileName1, fileName2, formatter) => {
