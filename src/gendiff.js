@@ -11,12 +11,11 @@ const genDiff = (dataBefore, dataAfter) => {
       return { key, type: 'parent', children: genDiff(oldValue, newValue) };
     }
     if (_.hasIn(dataBefore, key) && _.hasIn(dataAfter, key)) {
-      if (oldValue === newValue) {
-        return { key, type: 'unchanged', value: oldValue };
-      }
-      return {
+      const unchangedVariant1 = { key, type: 'unchanged', value: oldValue };
+      const modifiedVariant = {
         key, type: 'modified', oldValue, newValue,
       };
+      return oldValue === newValue ? unchangedVariant1 : modifiedVariant;
     }
     if (_.hasIn(dataBefore, key)) {
       return { key, type: 'deleted', value: oldValue };
