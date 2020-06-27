@@ -10,17 +10,18 @@ const genDiff = (dataBefore, dataAfter) => {
     if (_.isPlainObject(newValue) && _.isPlainObject(oldValue)) {
       return { key, type: 'parent', children: genDiff(oldValue, newValue) };
     }
-    if (_.hasIn(dataBefore, key) && _.hasIn(dataAfter, key)) {
-      const unchangedVariant1 = { key, type: 'unchanged', value: oldValue };
-      const modifiedVariant = {
-        key, type: 'modified', oldValue, newValue,
-      };
-      return oldValue === newValue ? unchangedVariant1 : modifiedVariant;
-    }
-    if (_.hasIn(dataBefore, key)) {
+    if (_.hasIn(dataBefore, key) && !_.hasIn(dataAfter, key)) {
       return { key, type: 'deleted', value: oldValue };
     }
-    return { key, type: 'added', value: newValue };
+    if (_.hasIn(dataAfter, key) && !_.hasIn(dataBefore, key)) {
+      return { key, type: 'added', value: newValue };
+    }
+    if (oldValue === newValue) {
+      return { key, type: 'unchanged', value: oldValue };
+    }
+    return {
+      key, type: 'modified', oldValue, newValue,
+    };
   });
   return diffs;
 };
