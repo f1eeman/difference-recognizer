@@ -4,14 +4,14 @@ import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
 
-const fixBugWithNumbers = (data) => {
+const fixBugWithNumber = (data) => {
   const keys = Object.keys(data);
   const result = keys.reduce((acc, key) => {
     const currentValue = data[key];
     const isNotNumber = _.isNaN(Number(currentValue)) || _.isBoolean(currentValue);
     const newValue = isNotNumber ? currentValue : Number(currentValue);
     if (_.isPlainObject(newValue)) {
-      return { ...acc, [key]: fixBugWithNumbers(newValue) };
+      return { ...acc, [key]: fixBugWithNumber(newValue) };
     }
     return { ...acc, [key]: newValue };
   }, {});
@@ -25,7 +25,7 @@ const parse = (data, extname) => {
     case 'yaml':
       return yaml.safeLoad(data);
     case 'ini':
-      return fixBugWithNumbers(ini.parse(data));
+      return fixBugWithNumber(ini.parse(data));
     default:
       throw new Error(`Unknown file extension: ${extname}`);
   }
