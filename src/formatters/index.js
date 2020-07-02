@@ -2,7 +2,7 @@ import getDiffJsonType from './json.js';
 import getDiffPlainType from './plain.js';
 import getDiffStylishType from './stylish.js';
 
-export default (data, formatter = 'stylish') => {
+export default (data, formatter) => {
   switch (formatter) {
     case 'json':
       return getDiffJsonType(data);

@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const genDiff = (dataBefore, dataAfter) => {
+const buildDiffTree = (dataBefore, dataAfter) => {
   const keysDataBefore = Object.keys(dataBefore);
   const keysDataAfter = Object.keys(dataAfter);
   const allKeys = _.union(keysDataBefore, keysDataAfter);
@@ -8,7 +8,7 @@ const genDiff = (dataBefore, dataAfter) => {
     const newValue = dataAfter[key];
     const oldValue = dataBefore[key];
     if (_.isPlainObject(newValue) && _.isPlainObject(oldValue)) {
-      return { key, type: 'parent', children: genDiff(oldValue, newValue) };
+      return { key, type: 'parent', children: buildDiffTree(oldValue, newValue) };
     }
     if (_.hasIn(dataBefore, key) && !_.hasIn(dataAfter, key)) {
       return { key, type: 'deleted', value: oldValue };
@@ -26,4 +26,4 @@ const genDiff = (dataBefore, dataAfter) => {
   return diffs;
 };
 
-export default genDiff;
+export default buildDiffTree;

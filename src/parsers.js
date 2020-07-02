@@ -2,14 +2,14 @@ import yaml from 'js-yaml';
 import ini from 'ini';
 import _ from 'lodash';
 
-const convertToNumber = (data) => {
+const replaceDataTypeOfDigitsFromStringToNumber = (data) => {
   const keys = Object.keys(data);
   const result = keys.reduce((acc, key) => {
     const currentValue = data[key];
     const isNumber = !_.isNaN(parseFloat(currentValue));
     const newValue = isNumber ? parseFloat(currentValue) : currentValue;
     if (_.isPlainObject(newValue)) {
-      return { ...acc, [key]: convertToNumber(newValue) };
+      return { ...acc, [key]: replaceDataTypeOfDigitsFromStringToNumber(newValue) };
     }
     return { ...acc, [key]: newValue };
   }, {});
@@ -23,7 +23,7 @@ export default (data, extname) => {
     case 'yaml':
       return yaml.safeLoad(data);
     case 'ini':
-      return convertToNumber(ini.parse(data));
+      return replaceDataTypeOfDigitsFromStringToNumber(ini.parse(data));
     default:
       throw new Error(`Unknown file extension: ${extname}`);
   }

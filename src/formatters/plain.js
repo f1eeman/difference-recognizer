@@ -11,23 +11,21 @@ export default (data) => {
         const newParent = `${parent}${key}.`;
         return getStr(children, newParent);
       }
+      if (type === 'modified' && _.isPlainObject(oldValue)) {
+        return `Property '${propertyName}' was changed from [complex value] to '${newValue}'`;
+      }
+      if (type === 'modified' && _.isPlainObject(newValue)) {
+        return `Property '${propertyName}' was changed from '${oldValue}' to [complex value]`;
+      }
       if (type === 'modified') {
-        if (_.isPlainObject(oldValue)) {
-          return `Property '${propertyName}' was changed from [complex value] to '${newValue}'`;
-        }
-        if (_.isPlainObject(newValue)) {
-          return `Property '${propertyName}' was changed from '${oldValue}' to [complex value]`;
-        }
         return `Property '${propertyName}' was changed from '${oldValue}' to '${newValue}'`;
       }
-
+      if (type === 'added' && _.isPlainObject(value)) {
+        return `Property '${propertyName}' was added with value: [complex value]`;
+      }
       if (type === 'added') {
-        if (_.isPlainObject(value)) {
-          return `Property '${propertyName}' was added with value: [complex value]`;
-        }
         return `Property '${propertyName}' was added with value: ${value}`;
       }
-
       if (type === 'deleted') {
         return `Property '${propertyName}' was deleted`;
       }

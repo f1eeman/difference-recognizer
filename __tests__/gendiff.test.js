@@ -23,7 +23,7 @@ beforeAll(() => {
 test.each(testArguments)('gendiff %s', (fileExtName) => {
   const pathToFile1 = getFilePath(`${fileName1}.${fileExtName}`);
   const pathToFile2 = getFilePath(`${fileName2}.${fileExtName}`);
-  expect(genDiff(pathToFile1, pathToFile2, 'stylish')).toEqual(resultStylishFormatter);
+  expect(genDiff(pathToFile1, pathToFile2)).toEqual(resultStylishFormatter);
   expect(genDiff(pathToFile1, pathToFile2, 'plain')).toEqual(resultPlainFormatter);
   expect(genDiff(pathToFile1, pathToFile2, 'json')).toEqual(resultJsonFormatter);
 });
