@@ -5,7 +5,7 @@ const getSubstr = (value) => {
     return '[complex value]';
   }
   if (_.isBoolean(value)) {
-    return `${value}`;
+    return value;
   }
   return `'${value}'`;
 };

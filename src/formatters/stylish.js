@@ -1,12 +1,11 @@
 import _ from 'lodash';
 
-const getSubstr = (beginIndent, endIndent, value) => {
-  if (_.isPlainObject(value)) {
-    const [key] = Object.keys(value);
-    const innerValue = value[key];
-    return `{\n${beginIndent}${key}: ${innerValue}\n${endIndent}}`;
+const getSubstr = (beginIndent, endIndent, obj) => {
+  if (_.isPlainObject(obj)) {
+    const [key, value] = Object.entries(obj).flat();
+    return `{\n${beginIndent}${key}: ${value}\n${endIndent}}`;
   }
-  return `${value}`;
+  return obj;
 };
 
 const getStrInStylishType = (tree, spacesCount = 4, stepForSpacesCount = 2) => {
