@@ -1,5 +1,14 @@
 import _ from 'lodash';
 
+const getSubstr = (beginIndent, endIndent, value) => {
+  if (_.isPlainObject(value)) {
+    const [keyOfOldValue] = Object.keys(value);
+    const innerValue = value[keyOfOldValue];
+    return `{\n${beginIndent}${keyOfOldValue}: ${innerValue}\n${endIndent}}`;
+  }
+  return `${value}`;
+};
+
 export default (data) => {
   const getStr = (tree, spacesCount = 4, stepForSpacesCount = 2) => {
     const result = tree.reduce((acc, node) => {
@@ -17,34 +26,22 @@ export default (data) => {
         const indent = ' '.repeat(spacesCount);
         return `${acc}${firstSymbol}${indent}${key}: {\n${getStr(children, spacesCount + (stepForSpacesCount * 2))}\n${indent}}`;
       }
-      if (type === 'modified' && _.isPlainObject(oldValue)) {
-        const [keyOfOldValue] = Object.keys(oldValue);
-        const innerValue = oldValue[keyOfOldValue];
-        return `${acc}${firstSymbol}${indentOut}- ${key}: {\n${indentInner}${keyOfOldValue}: ${innerValue}\n${indentBeforeCloseBracket}}\n${indentOut}+ ${key}: ${newValue}`;
-      }
-      if (type === 'modified' && _.isPlainObject(newValue)) {
-        const [keyOfNewValue] = Object.keys(newValue);
-        const innerValue = newValue[keyOfNewValue];
-        return `${acc}${firstSymbol}${indentOut}- ${key}: ${oldValue}\n${indentOut}+ ${key}: {\n${indentInner}${keyOfNewValue}: ${innerValue}\n${indentBeforeCloseBracket}}`;
-      }
       if (type === 'modified') {
-        return `${acc}${firstSymbol}${indentOut}- ${key}: ${oldValue}\n${indentOut}+ ${key}: ${newValue}`;
-      }
-      if (type === 'added' && _.isPlainObject(currentValue)) {
-        const [keyOfNewValue] = Object.keys(currentValue);
-        const innerValue = currentValue[keyOfNewValue];
-        return `${acc}${firstSymbol}${indentOut}+ ${key}: {\n${indentInner}${keyOfNewValue}: ${innerValue}\n${indentBeforeCloseBracket}}`;
+        const substForOldValue = getSubstr(indentInner, indentBeforeCloseBracket, oldValue);
+        const substrForNewValue = getSubstr(indentInner, indentBeforeCloseBracket, newValue);
+        return `${acc}${firstSymbol}${indentOut}- ${key}: ${substForOldValue}\n${indentOut}+ ${key}: ${substrForNewValue}`;
       }
       if (type === 'added') {
-        return `${acc}${firstSymbol}${indentOut}+ ${key}: ${currentValue}`;
-      }
-      if (type === 'deleted' && _.isPlainObject(currentValue)) {
-        const [keyOfOldValue] = Object.keys(currentValue);
-        const innerValue = currentValue[keyOfOldValue];
-        return `${acc}${firstSymbol}${indentOut}- ${key}: {\n${indentInner}${keyOfOldValue}: ${innerValue}\n${indentBeforeCloseBracket}}`;
+        const substrForCurrentValue = getSubstr(
+          indentInner, indentBeforeCloseBracket, currentValue
+        );
+        return `${acc}${firstSymbol}${indentOut}+ ${key}: ${substrForCurrentValue}`;
       }
       if (type === 'deleted') {
-        return `${acc}${firstSymbol}${indentOut}- ${key}: ${currentValue}`;
+        const substrForDeletedValue = getSubstr(
+          indentInner, indentBeforeCloseBracket, currentValue
+        );
+        return `${acc}${firstSymbol}${indentOut}- ${key}: ${substrForDeletedValue}`;
       }
       return `${acc}${firstSymbol}${indentForUnchangedValue}${key}: ${currentValue}`;
     }, '');
