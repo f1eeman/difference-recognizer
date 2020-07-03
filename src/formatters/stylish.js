@@ -33,13 +33,13 @@ export default (data) => {
       }
       if (type === 'added') {
         const substrForCurrentValue = getSubstr(
-          indentInner, indentBeforeCloseBracket, currentValue
+          indentInner, indentBeforeCloseBracket, currentValue,
         );
         return `${acc}${firstSymbol}${indentOut}+ ${key}: ${substrForCurrentValue}`;
       }
       if (type === 'deleted') {
         const substrForDeletedValue = getSubstr(
-          indentInner, indentBeforeCloseBracket, currentValue
+          indentInner, indentBeforeCloseBracket, currentValue,
         );
         return `${acc}${firstSymbol}${indentOut}- ${key}: ${substrForDeletedValue}`;
       }
