@@ -1,33 +1,37 @@
 import _ from 'lodash';
 
+const getSubstr = (value) => {
+  if (_.isPlainObject(value)) {
+    return '[complex value]';
+  }
+  if (_.isBoolean(value)) {
+    return `${value}`;
+  }
+  return `'${value}'`;
+};
+
 export default (data) => {
   const getStr = (tree, parent = '') => {
     const result = tree.flatMap((node) => {
       const {
-        key, type, value, oldValue, newValue, children,
+        key, type, currentValue, oldValue, newValue, children,
       } = node;
       const propertyName = `${parent}${key}`;
       if (type === 'parent') {
-        const newParent = `${parent}${key}.`;
+        const newParent = `${propertyName}.`;
         return getStr(children, newParent);
       }
-      if (type === 'modified' && _.isPlainObject(oldValue)) {
-        return `Property '${propertyName}' was changed from [complex value] to '${newValue}'`;
-      }
-      if (type === 'modified' && _.isPlainObject(newValue)) {
-        return `Property '${propertyName}' was changed from '${oldValue}' to [complex value]`;
-      }
       if (type === 'modified') {
-        return `Property '${propertyName}' was changed from '${oldValue}' to '${newValue}'`;
-      }
-      if (type === 'added' && _.isPlainObject(value)) {
-        return `Property '${propertyName}' was added with value: [complex value]`;
+        const substrForOldValue = getSubstr(oldValue);
+        const substrForNewValue = getSubstr(newValue);
+        return `Property '${propertyName}' was updated. From ${substrForOldValue} to ${substrForNewValue}`;
       }
       if (type === 'added') {
-        return `Property '${propertyName}' was added with value: ${value}`;
+        const substrForCurrentValue = getSubstr(currentValue);
+        return `Property '${propertyName}' was added with value: ${substrForCurrentValue}`;
       }
       if (type === 'deleted') {
-        return `Property '${propertyName}' was deleted`;
+        return `Property '${propertyName}' was removed`;
       }
       return '';
     });

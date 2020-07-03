@@ -11,7 +11,7 @@ export default (data) => {
       const indentBeforeCloseBracket = ' '.repeat(spacesCount);
       const indentForUnchangedValue = ' '.repeat(spacesCount);
       const {
-        key, type, value, oldValue, newValue, children,
+        key, type, currentValue, oldValue, newValue, children,
       } = node;
       if (type === 'parent') {
         const indent = ' '.repeat(spacesCount);
@@ -30,23 +30,23 @@ export default (data) => {
       if (type === 'modified') {
         return `${acc}${firstSymbol}${indentOut}- ${key}: ${oldValue}\n${indentOut}+ ${key}: ${newValue}`;
       }
-      if (type === 'added' && _.isPlainObject(value)) {
-        const [keyOfNewValue] = Object.keys(value);
-        const innerValue = value[keyOfNewValue];
+      if (type === 'added' && _.isPlainObject(currentValue)) {
+        const [keyOfNewValue] = Object.keys(currentValue);
+        const innerValue = currentValue[keyOfNewValue];
         return `${acc}${firstSymbol}${indentOut}+ ${key}: {\n${indentInner}${keyOfNewValue}: ${innerValue}\n${indentBeforeCloseBracket}}`;
       }
       if (type === 'added') {
-        return `${acc}${firstSymbol}${indentOut}+ ${key}: ${value}`;
+        return `${acc}${firstSymbol}${indentOut}+ ${key}: ${currentValue}`;
       }
-      if (type === 'deleted' && _.isPlainObject(value)) {
-        const [keyOfOldValue] = Object.keys(value);
-        const innerValue = value[keyOfOldValue];
+      if (type === 'deleted' && _.isPlainObject(currentValue)) {
+        const [keyOfOldValue] = Object.keys(currentValue);
+        const innerValue = currentValue[keyOfOldValue];
         return `${acc}${firstSymbol}${indentOut}- ${key}: {\n${indentInner}${keyOfOldValue}: ${innerValue}\n${indentBeforeCloseBracket}}`;
       }
       if (type === 'deleted') {
-        return `${acc}${firstSymbol}${indentOut}- ${key}: ${value}`;
+        return `${acc}${firstSymbol}${indentOut}- ${key}: ${currentValue}`;
       }
-      return `${acc}${firstSymbol}${indentForUnchangedValue}${key}: ${value}`;
+      return `${acc}${firstSymbol}${indentForUnchangedValue}${key}: ${currentValue}`;
     }, '');
     return `${result}`;
   };

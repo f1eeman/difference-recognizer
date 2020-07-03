@@ -4,14 +4,19 @@
     "type": "parent",
     "children": [
       {
+        "key": "follow",
+        "type": "added",
+        "currentValue": false
+      },
+      {
         "key": "setting1",
         "type": "unchanged",
-        "value": "Value 1"
+        "currentValue": "Value 1"
       },
       {
         "key": "setting2",
         "type": "deleted",
-        "value": 200
+        "currentValue": 200
       },
       {
         "key": "setting3",
@@ -22,37 +27,32 @@
         }
       },
       {
+        "key": "setting4",
+        "type": "added",
+        "currentValue": "blah blah"
+      },
+      {
+        "key": "setting5",
+        "type": "added",
+        "currentValue": {
+          "key5": "value5"
+        }
+      },
+      {
         "key": "setting6",
         "type": "parent",
         "children": [
           {
             "key": "key",
             "type": "unchanged",
-            "value": "value"
+            "currentValue": "value"
           },
           {
             "key": "ops",
             "type": "added",
-            "value": "vops"
+            "currentValue": "vops"
           }
         ]
-      },
-      {
-        "key": "follow",
-        "type": "added",
-        "value": false
-      },
-      {
-        "key": "setting4",
-        "type": "added",
-        "value": "blah blah"
-      },
-      {
-        "key": "setting5",
-        "type": "added",
-        "value": {
-          "key5": "value5"
-        }
       }
     ]
   },
@@ -69,7 +69,7 @@
       {
         "key": "foo",
         "type": "unchanged",
-        "value": "bar"
+        "currentValue": "bar"
       },
       {
         "key": "nest",
@@ -84,14 +84,14 @@
   {
     "key": "group2",
     "type": "deleted",
-    "value": {
+    "currentValue": {
       "abc": 12345
     }
   },
   {
     "key": "group3",
     "type": "added",
-    "value": {
+    "currentValue": {
       "fee": 100500
     }
   }

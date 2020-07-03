@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import parse from './parsers.js';
-import buildDiffTree from './diff-tree.js';
+import buildDiffTree from './tree.js';
 import getFormattedData from './formatters/index.js';
 
 const getExtName = (fileName) => path.extname(fileName).slice(1);
