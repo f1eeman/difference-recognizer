@@ -11,13 +11,13 @@ const buildDiffTree = (dataBefore, dataAfter) => {
       return { key, type: 'parent', children: buildDiffTree(oldValue, newValue) };
     }
     if (_.hasIn(dataBefore, key) && !_.hasIn(dataAfter, key)) {
-      return { key, type: 'deleted', currentValue: oldValue };
+      return { key, type: 'deleted', oldValue };
     }
     if (_.hasIn(dataAfter, key) && !_.hasIn(dataBefore, key)) {
-      return { key, type: 'added', currentValue: newValue };
+      return { key, type: 'added', newValue };
     }
     if (oldValue === newValue) {
-      return { key, type: 'unchanged', currentValue: oldValue };
+      return { key, type: 'unchanged', oldValue };
     }
     return {
       key, type: 'modified', oldValue, newValue,

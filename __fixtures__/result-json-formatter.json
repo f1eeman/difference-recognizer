@@ -6,17 +6,17 @@
       {
         "key": "follow",
         "type": "added",
-        "currentValue": false
+        "newValue": false
       },
       {
         "key": "setting1",
         "type": "unchanged",
-        "currentValue": "Value 1"
+        "oldValue": "Value 1"
       },
       {
         "key": "setting2",
         "type": "deleted",
-        "currentValue": 200
+        "oldValue": 200
       },
       {
         "key": "setting3",
@@ -29,12 +29,12 @@
       {
         "key": "setting4",
         "type": "added",
-        "currentValue": "blah blah"
+        "newValue": "blah blah"
       },
       {
         "key": "setting5",
         "type": "added",
-        "currentValue": {
+        "newValue": {
           "key5": "value5"
         }
       },
@@ -45,12 +45,12 @@
           {
             "key": "key",
             "type": "unchanged",
-            "currentValue": "value"
+            "oldValue": "value"
           },
           {
             "key": "ops",
             "type": "added",
-            "currentValue": "vops"
+            "newValue": "vops"
           }
         ]
       }
@@ -69,7 +69,7 @@
       {
         "key": "foo",
         "type": "unchanged",
-        "currentValue": "bar"
+        "oldValue": "bar"
       },
       {
         "key": "nest",
@@ -84,14 +84,14 @@
   {
     "key": "group2",
     "type": "deleted",
-    "currentValue": {
+    "oldValue": {
       "abc": 12345
     }
   },
   {
     "key": "group3",
     "type": "added",
-    "currentValue": {
+    "newValue": {
       "fee": 100500
     }
   }
