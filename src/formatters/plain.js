@@ -10,32 +10,32 @@ const getSubstr = (value) => {
   return `'${value}'`;
 };
 
-export default (data) => {
-  const getStr = (tree, parent = '') => {
-    const result = tree.flatMap((node) => {
-      const {
-        key, type, currentValue, oldValue, newValue, children,
-      } = node;
-      const propertyName = `${parent}${key}`;
-      if (type === 'parent') {
-        const newParent = `${propertyName}.`;
-        return getStr(children, newParent);
-      }
-      if (type === 'modified') {
-        const substrForOldValue = getSubstr(oldValue);
-        const substrForNewValue = getSubstr(newValue);
+const getStrInPlainType = (tree, parent = '') => {
+  const result = tree.flatMap((node) => {
+    const {
+      key, type, currentValue, oldValue, newValue, children,
+    } = node;
+    const propertyName = `${parent}${key}`;
+    const newParent = `${propertyName}.`;
+    const substrForOldValue = getSubstr(oldValue);
+    const substrForNewValue = getSubstr(newValue);
+    const substrForCurrentValue = getSubstr(currentValue);
+    switch (type) {
+      case 'parent':
+        return getStrInPlainType(children, newParent);
+      case 'modified':
         return `Property '${propertyName}' was updated. From ${substrForOldValue} to ${substrForNewValue}`;
-      }
-      if (type === 'added') {
-        const substrForCurrentValue = getSubstr(currentValue);
+      case 'added':
         return `Property '${propertyName}' was added with value: ${substrForCurrentValue}`;
-      }
-      if (type === 'deleted') {
+      case 'deleted':
         return `Property '${propertyName}' was removed`;
-      }
-      return '';
-    });
-    return result;
-  };
-  return getStr(data).filter((el) => el !== '').join('\n');
+      case 'unchanged':
+        return '';
+      default:
+        throw new Error(`Unknown type: ${type}`);
+    }
+  });
+  return result;
 };
+
+export default (data) => getStrInPlainType(data).filter((el) => el !== '').join('\n');

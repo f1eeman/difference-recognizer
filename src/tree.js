@@ -3,7 +3,7 @@ import _ from 'lodash';
 const buildDiffTree = (dataBefore, dataAfter) => {
   const keysDataBefore = Object.keys(dataBefore);
   const keysDataAfter = Object.keys(dataAfter);
-  const allKeys = _.union(keysDataBefore, keysDataAfter);
+  const allKeys = _.union(keysDataBefore, keysDataAfter).sort();
   const diffs = allKeys.map((key) => {
     const newValue = dataAfter[key];
     const oldValue = dataBefore[key];
@@ -23,8 +23,7 @@ const buildDiffTree = (dataBefore, dataAfter) => {
       key, type: 'modified', oldValue, newValue,
     };
   });
-  const sortedDiffs = _.sortBy(diffs, ['key']);
-  return sortedDiffs;
+  return diffs;
 };
 
 export default buildDiffTree;
