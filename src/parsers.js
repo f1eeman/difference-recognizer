@@ -1,13 +1,13 @@
 import yaml from 'js-yaml';
 import ini from 'ini';
 import _ from 'lodash';
+import isNumber from './isNumber.js';
 
 const replaceDataTypeOfDigitsFromStringToNumber = (data) => {
   const keys = Object.keys(data);
   const result = keys.reduce((acc, key) => {
     const currentValue = data[key];
-    const isNumber = !_.isNaN(parseFloat(currentValue));
-    const newValue = isNumber ? parseFloat(currentValue) : currentValue;
+    const newValue = isNumber(currentValue) ? parseFloat(currentValue) : currentValue;
     if (_.isPlainObject(newValue)) {
       return { ...acc, [key]: replaceDataTypeOfDigitsFromStringToNumber(newValue) };
     }

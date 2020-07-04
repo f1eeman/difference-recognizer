@@ -1,16 +1,17 @@
 import _ from 'lodash';
+import isNumber from '../isNumber.js';
 
 const getSubstr = (value) => {
   if (_.isPlainObject(value)) {
     return '[complex value]';
   }
-  if (_.isBoolean(value)) {
+  if (_.isBoolean(value) || isNumber(value)) {
     return value;
   }
   return `'${value}'`;
 };
 
-const getStrInPlainType = (tree, parent = '') => {
+const getDataInPlainType = (tree, parent = '') => {
   const result = tree.flatMap((node) => {
     const {
       key, type, oldValue, newValue, children,
@@ -19,7 +20,7 @@ const getStrInPlainType = (tree, parent = '') => {
     const newParent = `${propertyName}.`;
     switch (type) {
       case 'parent':
-        return getStrInPlainType(children, newParent);
+        return getDataInPlainType(children, newParent);
       case 'modified':
         return `Property '${propertyName}' was updated. From ${getSubstr(oldValue)} to ${getSubstr(newValue)}`;
       case 'added':
@@ -32,7 +33,7 @@ const getStrInPlainType = (tree, parent = '') => {
         throw new Error(`Unknown type: ${type}`);
     }
   });
-  return result;
+  return _.compact(result);
 };
 
-export default (data) => getStrInPlainType(data).filter((el) => el !== '').join('\n');
+export default (data) => getDataInPlainType(data).join('\n');

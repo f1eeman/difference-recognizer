@@ -1,16 +1,15 @@
 import _ from 'lodash';
 
-const getSubstr = (beginIndent, endIndent, obj) => {
-  if (_.isPlainObject(obj)) {
-    const [key, value] = Object.entries(obj).flat();
-    return `{\n${beginIndent}${key}: ${value}\n${endIndent}}`;
+const getSubstr = (beginIndent, endIndent, value) => {
+  if (_.isPlainObject(value)) {
+    const [key, property] = Object.entries(value).flat();
+    return `{\n${beginIndent}${key}: ${property}\n${endIndent}}`;
   }
-  return obj;
+  return value;
 };
 
 const getStrInStylishType = (tree, spacesCount = 4, stepForSpacesCount = 2) => {
-  const result = tree.reduce((acc, node) => {
-    const firstSymbol = acc.length === 0 ? '' : '\n';
+  const result = tree.flatMap((node) => {
     const spacesBeforeValuesCount = spacesCount - stepForSpacesCount;
     const spacesBeforeInnerValuesCount = spacesCount + (stepForSpacesCount * 2);
     const indentOut = ' '.repeat(spacesBeforeValuesCount);
@@ -25,20 +24,20 @@ const getStrInStylishType = (tree, spacesCount = 4, stepForSpacesCount = 2) => {
     const substrForNewValue = getSubstr(indentInner, indentBeforeCloseBracket, newValue);
     switch (type) {
       case 'parent':
-        return `${acc}${firstSymbol}${indentForParentKey}${key}: {\n${getStrInStylishType(children, spacesCount + (stepForSpacesCount * 2))}\n${indentBeforeCloseBracket}}`;
+        return `${indentForParentKey}${key}: {\n${getStrInStylishType(children, spacesCount + (stepForSpacesCount * 2))}\n${indentBeforeCloseBracket}}`;
       case 'modified':
-        return `${acc}${firstSymbol}${indentOut}- ${key}: ${substForOldValue}\n${indentOut}+ ${key}: ${substrForNewValue}`;
+        return `${indentOut}- ${key}: ${substForOldValue}\n${indentOut}+ ${key}: ${substrForNewValue}`;
       case 'added':
-        return `${acc}${firstSymbol}${indentOut}+ ${key}: ${substrForNewValue}`;
+        return `${indentOut}+ ${key}: ${substrForNewValue}`;
       case 'deleted':
-        return `${acc}${firstSymbol}${indentOut}- ${key}: ${substForOldValue}`;
+        return `${indentOut}- ${key}: ${substForOldValue}`;
       case 'unchanged':
-        return `${acc}${firstSymbol}${indentForUnchangedValue}${key}: ${substForOldValue}`;
+        return `${indentForUnchangedValue}${key}: ${substForOldValue}`;
       default:
         throw new Error(`Unknown type: ${type}`);
     }
-  }, '');
-  return `${result}`;
+  });
+  return result.join('\n');
 };
 
 export default (data) => `{\n${getStrInStylishType(data)}\n}`;
