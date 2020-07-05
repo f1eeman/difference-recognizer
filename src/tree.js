@@ -1,26 +1,26 @@
 import _ from 'lodash';
 
-const buildDiffTree = (dataBefore, dataAfter) => {
-  const keysDataBefore = Object.keys(dataBefore);
-  const keysDataAfter = Object.keys(dataAfter);
-  const allKeys = _.union(keysDataBefore, keysDataAfter).sort();
+const buildDiffTree = (data1, data2) => {
+  const keysData1 = Object.keys(data1);
+  const keysData2 = Object.keys(data2);
+  const allKeys = _.union(keysData1, keysData2).sort();
   const diffs = allKeys.map((key) => {
-    const newValue = dataAfter[key];
-    const oldValue = dataBefore[key];
-    if (_.isPlainObject(newValue) && _.isPlainObject(oldValue)) {
-      return { key, type: 'parent', children: buildDiffTree(oldValue, newValue) };
+    const value1 = data1[key];
+    const value2 = data2[key];
+    if (_.isPlainObject(value2) && _.isPlainObject(value1)) {
+      return { key, type: 'parent', children: buildDiffTree(value1, value2) };
     }
-    if (_.hasIn(dataBefore, key) && !_.hasIn(dataAfter, key)) {
-      return { key, type: 'deleted', oldValue };
+    if (_.hasIn(data1, key) && !_.hasIn(data2, key)) {
+      return { key, type: 'deleted', value: value1 };
     }
-    if (_.hasIn(dataAfter, key) && !_.hasIn(dataBefore, key)) {
-      return { key, type: 'added', newValue };
+    if (_.hasIn(data2, key) && !_.hasIn(data1, key)) {
+      return { key, type: 'added', value: value2 };
     }
-    if (oldValue === newValue) {
-      return { key, type: 'unchanged', oldValue };
+    if (value1 === value2) {
+      return { key, type: 'unchanged', value: value1 };
     }
     return {
-      key, type: 'modified', oldValue, newValue,
+      key, type: 'modified', value1, value2,
     };
   });
   return diffs;

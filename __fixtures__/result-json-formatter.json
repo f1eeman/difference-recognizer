@@ -6,35 +6,35 @@
       {
         "key": "follow",
         "type": "added",
-        "newValue": false
+        "value": false
       },
       {
         "key": "setting1",
         "type": "unchanged",
-        "oldValue": "Value 1"
+        "value": "Value 1"
       },
       {
         "key": "setting2",
         "type": "deleted",
-        "oldValue": 200
+        "value": 200
       },
       {
         "key": "setting3",
         "type": "modified",
-        "oldValue": true,
-        "newValue": {
+        "value1": true,
+        "value2": {
           "key": "value"
         }
       },
       {
         "key": "setting4",
         "type": "added",
-        "newValue": "blah blah"
+        "value": "blah blah"
       },
       {
         "key": "setting5",
         "type": "added",
-        "newValue": {
+        "value": {
           "key5": "value5"
         }
       },
@@ -45,12 +45,12 @@
           {
             "key": "key",
             "type": "unchanged",
-            "oldValue": "value"
+            "value": "value"
           },
           {
             "key": "ops",
             "type": "added",
-            "newValue": "vops"
+            "value": "vops"
           }
         ]
       }
@@ -63,35 +63,35 @@
       {
         "key": "baz",
         "type": "modified",
-        "oldValue": "bas",
-        "newValue": "bars"
+        "value1": "bas",
+        "value2": "bars"
       },
       {
         "key": "foo",
         "type": "unchanged",
-        "oldValue": "bar"
+        "value": "bar"
       },
       {
         "key": "nest",
         "type": "modified",
-        "oldValue": {
+        "value1": {
           "key": "value"
         },
-        "newValue": "str"
+        "value2": "str"
       }
     ]
   },
   {
     "key": "group2",
     "type": "deleted",
-    "oldValue": {
+    "value": {
       "abc": 12345
     }
   },
   {
     "key": "group3",
     "type": "added",
-    "newValue": {
+    "value": {
       "fee": 100500
     }
   }
