@@ -1,22 +1,30 @@
 import _ from 'lodash';
 
 const getSubstr = (beginIndent, endIndent, value) => {
-  if (_.isPlainObject(value)) {
-    const [key, property] = Object.entries(value).flat();
-    return `{\n${beginIndent}${key}: ${property}\n${endIndent}}`;
-  }
-  return value;
+  if (!_.isPlainObject(value)) return value;
+  const [key, property] = Object.entries(value).flat();
+  return `{\n${beginIndent}${key}: ${property}\n${endIndent}}`;
 };
 
-const getStrInStylishType = (tree, spacesCount = 4, stepForSpacesCount = 2) => {
-  const result = tree.flatMap((node) => {
-    const spacesBeforeValuesCount = spacesCount - stepForSpacesCount;
-    const spacesBeforeInnerValuesCount = spacesCount + (stepForSpacesCount * 2);
-    const indentOut = ' '.repeat(spacesBeforeValuesCount);
-    const indentInner = ' '.repeat(spacesBeforeInnerValuesCount);
-    const indentBeforeCloseBracket = ' '.repeat(spacesCount);
-    const indentForUnchangedValue = ' '.repeat(spacesCount);
-    const indentForParentKey = ' '.repeat(spacesCount);
+const getIndent = (isUnchangedValues, isNestedValues, isParentKey, isCloseBracket, depth) => {
+  const stepForSpacesCount = 4;
+  const stepForSpacesForChangedValuesCount = 2;
+  if (isUnchangedValues || isParentKey || isCloseBracket) {
+    return ' '.repeat(depth * stepForSpacesCount);
+  }
+  if (isNestedValues) {
+    return ' '.repeat((depth * stepForSpacesCount) + stepForSpacesCount);
+  }
+  return ' '.repeat((depth * stepForSpacesCount) - stepForSpacesForChangedValuesCount);
+};
+
+const getStrInStylishType = (tree, depth = 1) => {
+  const result = tree.map((node) => {
+    const indentOut = getIndent(false, false, false, false, depth);
+    const indentInner = getIndent(false, true, false, false, depth);
+    const indentOutForUnchangedValues = getIndent(true, false, false, false, depth);
+    const indentBeforeCloseBracket = getIndent(false, false, false, true, depth);
+    const indentForParentKey = getIndent(false, false, true, false, depth);
     const {
       key, type, value, value1, value2, children,
     } = node;
@@ -25,7 +33,7 @@ const getStrInStylishType = (tree, spacesCount = 4, stepForSpacesCount = 2) => {
     const substrForValue2 = getSubstr(indentInner, indentBeforeCloseBracket, value2);
     switch (type) {
       case 'parent':
-        return `${indentForParentKey}${key}: {\n${getStrInStylishType(children, spacesCount + (stepForSpacesCount * 2))}\n${indentBeforeCloseBracket}}`;
+        return `${indentForParentKey}${key}: {\n${getStrInStylishType(children, depth + 1)}\n${indentBeforeCloseBracket}}`;
       case 'modified':
         return `${indentOut}- ${key}: ${substForValue1}\n${indentOut}+ ${key}: ${substrForValue2}`;
       case 'added':
@@ -33,7 +41,7 @@ const getStrInStylishType = (tree, spacesCount = 4, stepForSpacesCount = 2) => {
       case 'deleted':
         return `${indentOut}- ${key}: ${substrForValue}`;
       case 'unchanged':
-        return `${indentForUnchangedValue}${key}: ${substrForValue}`;
+        return `${indentOutForUnchangedValues}${key}: ${substrForValue}`;
       default:
         throw new Error(`Unknown type: ${type}`);
     }
