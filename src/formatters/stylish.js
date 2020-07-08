@@ -1,21 +1,15 @@
 import _ from 'lodash';
 
-const additionalIndentForUnchangedValues = '  ';
-const additionalIndentForParentKey = '  ';
-const additionalIndentForCloseBracket = '  ';
-const additionalInnerIndent = '      ';
+const additionalIndentForChangedType = '  ';
+const additionalOutIndent = '    ';
+const additionalInnerIndent = '        ';
 
 const getIndent = (depth) => {
-  switch (depth) {
-    case 1:
-      return ' '.repeat(2);
-    case 2:
-      return ' '.repeat(6);
-    case 3:
-      return ' '.repeat(10);
-    default:
-      throw new Error(`Unknown type: ${depth}`);
+  if (depth === 1) {
+    return '';
   }
+  const base = 2;
+  return ' '.repeat(base ** depth);
 };
 
 const getSubstr = (beginIndent, endIndent, value) => {
@@ -31,20 +25,20 @@ const getStrInStylishType = (tree) => {
       const {
         key, type, value, value1, value2, children,
       } = node;
-      const substrForValue = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalIndentForCloseBracket}`, value);
-      const substForValue1 = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalIndentForCloseBracket}`, value1);
-      const substrForValue2 = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalIndentForCloseBracket}`, value2);
+      const substrForValue = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalOutIndent}`, value);
+      const substForValue1 = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalOutIndent}`, value1);
+      const substrForValue2 = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalOutIndent}`, value2);
       switch (type) {
         case 'parent':
-          return `${indent}${additionalIndentForParentKey}${key}: {\n${iter(children, depth + 1)}\n${indent}${additionalIndentForCloseBracket}}`;
+          return `${indent}${additionalOutIndent}${key}: {\n${iter(children, depth + 1)}\n${indent}${additionalOutIndent}}`;
         case 'modified':
-          return `${indent}- ${key}: ${substForValue1}\n${indent}+ ${key}: ${substrForValue2}`;
+          return `${indent}${additionalIndentForChangedType}- ${key}: ${substForValue1}\n${indent}${additionalIndentForChangedType}+ ${key}: ${substrForValue2}`;
         case 'added':
-          return `${indent}+ ${key}: ${substrForValue}`;
+          return `${indent}${additionalIndentForChangedType}+ ${key}: ${substrForValue}`;
         case 'deleted':
-          return `${indent}- ${key}: ${substrForValue}`;
+          return `${indent}${additionalIndentForChangedType}- ${key}: ${substrForValue}`;
         case 'unchanged':
-          return `${indent}${additionalIndentForUnchangedValues}${key}: ${substrForValue}`;
+          return `${indent}${additionalOutIndent}${key}: ${substrForValue}`;
         default:
           throw new Error(`Unknown type: ${type}`);
       }
