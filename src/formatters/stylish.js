@@ -1,43 +1,50 @@
 import _ from 'lodash';
 
+const additionalIndentForUnchangedValues = '  ';
+const additionalIndentForParentKey = '  ';
+const additionalIndentForCloseBracket = '  ';
+const additionalInnerIndent = '      ';
+
+const getIndent = (depth) => {
+  switch (depth) {
+    case 1:
+      return ' '.repeat(2);
+    case 2:
+      return ' '.repeat(6);
+    case 3:
+      return ' '.repeat(10);
+    default:
+      throw new Error(`Unknown type: ${depth}`);
+  }
+};
+
 const getSubstr = (beginIndent, endIndent, value) => {
   if (!_.isPlainObject(value)) return value;
   const [key, property] = Object.entries(value).flat();
   return `{\n${beginIndent}${key}: ${property}\n${endIndent}}`;
 };
 
-const getIndent = (depth) => {
-  const stepsForIndentCount = 4;
-  return ' '.repeat(depth * stepsForIndentCount);
-};
-
 const getStrInStylishType = (tree) => {
   const iter = (data, depth = 1) => {
     const result = data.map((node) => {
-      const stepsForInnerIndentCount = 4;
-      const stepsForIndentForChangedValuesCount = 2;
-      const indentOutForChangedValues = ' '.repeat((depth * stepsForInnerIndentCount) - stepsForIndentForChangedValuesCount);
-      const indentInner = ' '.repeat((depth * stepsForInnerIndentCount) + stepsForInnerIndentCount);
-      const indentOutForUnchangedValues = getIndent(depth);
-      const indentBeforeCloseBracket = getIndent(depth);
-      const indentForParentKey = getIndent(depth);
+      const indent = getIndent(depth);
       const {
         key, type, value, value1, value2, children,
       } = node;
-      const substrForValue = getSubstr(indentInner, indentBeforeCloseBracket, value);
-      const substForValue1 = getSubstr(indentInner, indentBeforeCloseBracket, value1);
-      const substrForValue2 = getSubstr(indentInner, indentBeforeCloseBracket, value2);
+      const substrForValue = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalIndentForCloseBracket}`, value);
+      const substForValue1 = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalIndentForCloseBracket}`, value1);
+      const substrForValue2 = getSubstr(`${indent}${additionalInnerIndent}`, `${indent}${additionalIndentForCloseBracket}`, value2);
       switch (type) {
         case 'parent':
-          return `${indentForParentKey}${key}: {\n${iter(children, depth + 1)}\n${indentBeforeCloseBracket}}`;
+          return `${indent}${additionalIndentForParentKey}${key}: {\n${iter(children, depth + 1)}\n${indent}${additionalIndentForCloseBracket}}`;
         case 'modified':
-          return `${indentOutForChangedValues}- ${key}: ${substForValue1}\n${indentOutForChangedValues}+ ${key}: ${substrForValue2}`;
+          return `${indent}- ${key}: ${substForValue1}\n${indent}+ ${key}: ${substrForValue2}`;
         case 'added':
-          return `${indentOutForChangedValues}+ ${key}: ${substrForValue}`;
+          return `${indent}+ ${key}: ${substrForValue}`;
         case 'deleted':
-          return `${indentOutForChangedValues}- ${key}: ${substrForValue}`;
+          return `${indent}- ${key}: ${substrForValue}`;
         case 'unchanged':
-          return `${indentOutForUnchangedValues}${key}: ${substrForValue}`;
+          return `${indent}${additionalIndentForUnchangedValues}${key}: ${substrForValue}`;
         default:
           throw new Error(`Unknown type: ${type}`);
       }
