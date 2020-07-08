@@ -1,16 +1,10 @@
 import _ from 'lodash';
 
-const additionalIndentForChangedType = '  ';
+const additionalIndentForChangedValues = '  ';
 const additionalOutIndent = '    ';
 const additionalInnerIndent = '        ';
 
-const getIndent = (depth) => {
-  if (depth === 1) {
-    return '';
-  }
-  const base = 2;
-  return ' '.repeat(base ** depth);
-};
+const getIndent = (depth) => '    '.repeat(depth);
 
 const getSubstr = (beginIndent, endIndent, value) => {
   if (!_.isPlainObject(value)) return value;
@@ -19,7 +13,7 @@ const getSubstr = (beginIndent, endIndent, value) => {
 };
 
 const getStrInStylishType = (tree) => {
-  const iter = (data, depth = 1) => {
+  const iter = (data, depth = 0) => {
     const result = data.map((node) => {
       const indent = getIndent(depth);
       const {
@@ -32,11 +26,11 @@ const getStrInStylishType = (tree) => {
         case 'parent':
           return `${indent}${additionalOutIndent}${key}: {\n${iter(children, depth + 1)}\n${indent}${additionalOutIndent}}`;
         case 'modified':
-          return `${indent}${additionalIndentForChangedType}- ${key}: ${substForValue1}\n${indent}${additionalIndentForChangedType}+ ${key}: ${substrForValue2}`;
+          return `${indent}${additionalIndentForChangedValues}- ${key}: ${substForValue1}\n${indent}${additionalIndentForChangedValues}+ ${key}: ${substrForValue2}`;
         case 'added':
-          return `${indent}${additionalIndentForChangedType}+ ${key}: ${substrForValue}`;
+          return `${indent}${additionalIndentForChangedValues}+ ${key}: ${substrForValue}`;
         case 'deleted':
-          return `${indent}${additionalIndentForChangedType}- ${key}: ${substrForValue}`;
+          return `${indent}${additionalIndentForChangedValues}- ${key}: ${substrForValue}`;
         case 'unchanged':
           return `${indent}${additionalOutIndent}${key}: ${substrForValue}`;
         default:
