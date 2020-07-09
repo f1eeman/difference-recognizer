@@ -14,13 +14,8 @@ const getSubstr = (value, depth) => {
 };
 
 const getStrForUnchangedType = (key, value, depth) => {
-  const outIndent = getIndent(depth + 1);
-  const nestedIndent = getIndent(depth + 2);
-  if (!_.isPlainObject(value)) {
-    return `${outIndent}${key}: ${value}`;
-  }
-  const [nestedKey, nestedValue] = Object.entries(value).flat();
-  return `${outIndent}${key}: {\n${nestedIndent}${nestedKey}: ${nestedValue}\n${nestedIndent}}`;
+  const indent = getIndent(depth + 1);
+  return `${indent}${key}: ${getSubstr(value)}`;
 };
 
 const getStrings = (node, depth, callback) => {
