@@ -23,15 +23,15 @@ const getStrings = (node, depth, callback) => {
   const substrForValue2 = getSubstr(value2, depth);
   switch (type) {
     case 'parent':
-      return [`${indent}${additionalOutIndent}${key}: {\n${callback(children, depth + 1)}`, `${indent}${additionalOutIndent}}`];
+      return `${indent}${additionalOutIndent}${key}: {\n${callback(children, depth + 1)}\n${indent}${additionalOutIndent}}`;
     case 'modified':
       return [`${indent}${additionalIndentForChangedValues}- ${key}: ${substForValue1}`, `${indent}${additionalIndentForChangedValues}+ ${key}: ${substrForValue2}`];
     case 'added':
-      return [`${indent}${additionalIndentForChangedValues}+ ${key}: ${substrForValue}`];
+      return `${indent}${additionalIndentForChangedValues}+ ${key}: ${substrForValue}`;
     case 'deleted':
-      return [`${indent}${additionalIndentForChangedValues}- ${key}: ${substrForValue}`];
+      return `${indent}${additionalIndentForChangedValues}- ${key}: ${substrForValue}`;
     case 'unchanged':
-      return [`${indent}${additionalOutIndent}${key}: ${substrForValue}`];
+      return `${indent}${additionalOutIndent}${key}: ${substrForValue}`;
     default:
       throw new Error(`Unknown type: ${type}`);
   }
@@ -39,7 +39,7 @@ const getStrings = (node, depth, callback) => {
 
 const getStrInStylishType = (tree) => {
   const iter = (children, depth = 0) => children.flatMap((child) => getStrings(child, depth, iter)).join('\n');
-  return iter(tree);
+  return `{\n${iter(tree)}\n}`;
 };
 
-export default (data) => `{\n${getStrInStylishType(data)}\n}`;
+export default getStrInStylishType;

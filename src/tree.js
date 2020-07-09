@@ -10,10 +10,10 @@ const buildDiffTree = (data1, data2) => {
     if (_.isPlainObject(value2) && _.isPlainObject(value1)) {
       return { key, type: 'parent', children: buildDiffTree(value1, value2) };
     }
-    if (_.hasIn(data1, key) && !_.hasIn(data2, key)) {
+    if (!_.hasIn(data2, key)) {
       return { key, type: 'deleted', value: value1 };
     }
-    if (_.hasIn(data2, key) && !_.hasIn(data1, key)) {
+    if (!_.hasIn(data1, key)) {
       return { key, type: 'added', value: value2 };
     }
     if (value1 === value2) {
