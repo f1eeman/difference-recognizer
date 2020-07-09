@@ -13,6 +13,16 @@ const getSubstr = (value, depth) => {
   return `{\n${indent}${additionalInnerIndent}${key}: ${property}\n${indent}${additionalOutIndent}}`;
 };
 
+const getStrForUnchangedType = (key, value, depth) => {
+  const outIndent = getIndent(depth + 1);
+  const nestedIndent = getIndent(depth + 2);
+  if (!_.isPlainObject(value)) {
+    return `${outIndent}${key}: ${value}`;
+  }
+  const [nestedKey, nestedValue] = Object.entries(value).flat();
+  return `${outIndent}${key}: {\n${nestedIndent}${nestedKey}: ${nestedValue}\n${nestedIndent}}`;
+};
+
 const getStrings = (node, depth, callback) => {
   const indent = getIndent(depth);
   const {
@@ -31,14 +41,14 @@ const getStrings = (node, depth, callback) => {
     case 'deleted':
       return `${indent}${additionalIndentForChangedValues}- ${key}: ${substrForValue}`;
     case 'unchanged':
-      return `${indent}${additionalOutIndent}${key}: ${substrForValue}`;
+      return getStrForUnchangedType(key, value, depth);
     default:
       throw new Error(`Unknown type: ${type}`);
   }
 };
 
 const getStrInStylishType = (tree) => {
-  const iter = (children, depth = 0) => children.flatMap((child) => getStrings(child, depth, iter)).join('\n');
+  const iter = (subtree, depth = 0) => subtree.flatMap((node) => getStrings(node, depth, iter)).join('\n');
   return `{\n${iter(tree)}\n}`;
 };
 
