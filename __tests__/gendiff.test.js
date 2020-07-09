@@ -5,8 +5,8 @@ import genDiff from '../index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const fileName1 = 'before';
-const fileName2 = 'after';
+const fileName1 = 'file1';
+const fileName2 = 'file2';
 const testArguments = ['json', 'ini', 'yaml'];
 let resultStylishFormatter;
 let resultPlainFormatter;
