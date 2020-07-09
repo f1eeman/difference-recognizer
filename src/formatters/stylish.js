@@ -13,11 +13,6 @@ const getSubstr = (value, depth) => {
   return `{\n${indent}${additionalInnerIndent}${key}: ${property}\n${indent}${additionalOutIndent}}`;
 };
 
-const getStrForUnchangedType = (key, value, depth) => {
-  const indent = getIndent(depth + 1);
-  return `${indent}${key}: ${getSubstr(value)}`;
-};
-
 const getStrings = (node, depth, callback) => {
   const indent = getIndent(depth);
   const {
@@ -36,7 +31,7 @@ const getStrings = (node, depth, callback) => {
     case 'deleted':
       return `${indent}${additionalIndentForChangedValues}- ${key}: ${substrForValue}`;
     case 'unchanged':
-      return getStrForUnchangedType(key, value, depth);
+      return `${indent}${additionalOutIndent}${key}: ${substrForValue}`;
     default:
       throw new Error(`Unknown type: ${type}`);
   }
