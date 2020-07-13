@@ -35,4 +35,4 @@ const getDataInPlainType = (tree, parent = '') => {
   return result;
 };
 
-export default (data) => getDataInPlainType(data).join('\n');
+export default (tree) => getDataInPlainType(tree).join('\n');

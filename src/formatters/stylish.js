@@ -13,7 +13,7 @@ const getSubstr = (value, depth) => {
   return `{\n${indent}${additionalInnerIndent}${key}: ${property}\n${indent}${additionalOutIndent}}`;
 };
 
-const getStrings = (node, depth, callback) => {
+const getStrings = (node, depth, childrenHandler) => {
   const indent = getIndent(depth);
   const {
     key, type, value, value1, value2, children,
@@ -23,7 +23,7 @@ const getStrings = (node, depth, callback) => {
   const substrForValue2 = getSubstr(value2, depth);
   switch (type) {
     case 'parent':
-      return `${indent}${additionalOutIndent}${key}: {\n${callback(children, depth + 1)}\n${indent}${additionalOutIndent}}`;
+      return `${indent}${additionalOutIndent}${key}: {\n${childrenHandler(children, depth + 1)}\n${indent}${additionalOutIndent}}`;
     case 'modified':
       return [`${indent}${additionalIndentForChangedValues}- ${key}: ${substForValue1}`, `${indent}${additionalIndentForChangedValues}+ ${key}: ${substrForValue2}`];
     case 'added':
@@ -37,9 +37,7 @@ const getStrings = (node, depth, callback) => {
   }
 };
 
-const getStrInStylishType = (tree) => {
+export default (tree) => {
   const iter = (subtree, depth = 0) => subtree.flatMap((node) => getStrings(node, depth, iter)).join('\n');
   return `{\n${iter(tree)}\n}`;
 };
-
-export default getStrInStylishType;

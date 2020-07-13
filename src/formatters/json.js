@@ -1,1 +1,1 @@
-export default (data) => JSON.stringify(data, null, 2);
+export default (tree) => JSON.stringify(tree, null, 2);

@@ -5,7 +5,7 @@
 ## gendiff for files with flat structure
 [![asciicast](https://asciinema.org/a/ED9Ir721VSZvTS1scolbOK1g4.svg)](https://asciinema.org/a/ED9Ir721VSZvTS1scolbOK1g4)
 
-## gendiff for files with nested structure
+## gendiff for files with nested structure, formatter: stylish
 [![asciicast](https://asciinema.org/a/b8WbXxWmbCpXjWF8doF14rzME.svg)](https://asciinema.org/a/b8WbXxWmbCpXjWF8doF14rzME)
 
 ## gendiff for files with nested structure, formatter: plain 

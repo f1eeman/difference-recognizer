@@ -17,6 +17,6 @@ const getData = (fileName) => {
 export default (fileName1, fileName2, formatter = 'stylish') => {
   const data1 = getData(fileName1);
   const data2 = getData(fileName2);
-  const diff = buildDiffTree(data1, data2);
-  return getFormattedData(diff, formatter);
+  const diffTree = buildDiffTree(data1, data2);
+  return getFormattedData(diffTree, formatter);
 };
