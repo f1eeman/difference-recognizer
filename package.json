@@ -1,7 +1,7 @@
 {
-  "name": "frontend-project-lvl2",
+  "name": "difference-definer",
   "version": "1.0.2",
-  "description": "Personall project \"Difference definer\"",
+  "description": "Difference definer - program that determines the difference between two data structures.",
   "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
@@ -18,7 +18,7 @@
     "url": "git+https://github.com/f1eeman/frontend-project-lvl2.git"
   },
   "keywords": [
-    "Difference",
+    "difference",
     "definer"
   ],
   "author": "daniyar zhanakhmetov",
