@@ -7,8 +7,8 @@ Difference recognizer – a program that determines the difference between two d
 
 The features of this utility:
 
-..*Support for different input formats: yaml, json
-..*Generating a report in plain text, stylish, and json format
+1. Support for different input formats: yaml, json
+2. Generating a report in plain text, stylish, and json format
 
 Example of use:
 
