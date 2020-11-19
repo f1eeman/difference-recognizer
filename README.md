@@ -1,7 +1,17 @@
-# frontend-project-lvl2
+# Difference recognizer(gendiff)
 [![Maintainability](https://api.codeclimate.com/v1/badges/0c3c46a0d5d162e522ce/maintainability)](https://codeclimate.com/github/f1eeman/frontend-project-lvl2/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/0c3c46a0d5d162e522ce/test_coverage)](https://codeclimate.com/github/f1eeman/frontend-project-lvl2/test_coverage)
 ![Node CI](https://github.com/f1eeman/frontend-project-lvl2/workflows/Node%20CI/badge.svg)
+
+Difference recognizer – a program that determines the difference between two data structures.
+
+The features of this utility:
+
+..*Support for different input formats: yaml, json
+..*Generating a report in plain text, stylish, and json format
+
+Example of use:
+
 ## gendiff for files with flat structure
 [![asciicast](https://asciinema.org/a/ED9Ir721VSZvTS1scolbOK1g4.svg)](https://asciinema.org/a/ED9Ir721VSZvTS1scolbOK1g4)
 
