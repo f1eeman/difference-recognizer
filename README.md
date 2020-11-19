@@ -12,14 +12,14 @@ The features of this utility:
 
 Example of use:
 
-## gendiff for files with flat structure
+1. gendiff for files with flat structure
 [![asciicast](https://asciinema.org/a/ED9Ir721VSZvTS1scolbOK1g4.svg)](https://asciinema.org/a/ED9Ir721VSZvTS1scolbOK1g4)
 
-## gendiff for files with nested structure, formatter: stylish
+2. gendiff for files with nested structure, formatter: stylish
 [![asciicast](https://asciinema.org/a/b8WbXxWmbCpXjWF8doF14rzME.svg)](https://asciinema.org/a/b8WbXxWmbCpXjWF8doF14rzME)
 
-## gendiff for files with nested structure, formatter: plain 
+3. gendiff for files with nested structure, formatter: plain 
 [![asciicast](https://asciinema.org/a/TUrhOVR4Bl9XxE7594cUkagdO.svg)](https://asciinema.org/a/TUrhOVR4Bl9XxE7594cUkagdO)
 
-## gendiff for files with nested structure, formatter: json 
+4. gendiff for files with nested structure, formatter: json 
 [![asciicast](https://asciinema.org/a/adGCOWqfjqDCp6HpSHrCDNS0X.svg)](https://asciinema.org/a/adGCOWqfjqDCp6HpSHrCDNS0X)
